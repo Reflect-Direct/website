@@ -1,0 +1,12 @@
+{
+  "name": "reflect-direct-website",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Static marketing site for Reflect.Direct — no build step required to run the site itself, only for tests.",
+  "scripts": {
+    "test": "playwright test"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.48.0"
+  }
+}
