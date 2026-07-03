@@ -2,7 +2,7 @@
 
 Single-page marketing landing page for [reflect.direct](https://reflect.direct), styled in the Claude (Anthropic) design language: warm cream surfaces, coral/terracotta accent, serif display headings over clean sans-serif body copy.
 
-Static site — no build step, no dependencies. Hosted on GitHub Pages: https://reflect-direct.github.io/reflect-direct-website/
+Static site — no build step, no dependencies. Hosted on GitHub Pages: https://reflect-direct.github.io/website/
 
 ## Local development
 
