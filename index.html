@@ -211,10 +211,14 @@
         <p>Leave your details and we'll reach out from <a href="/cdn-cgi/l/email-protection#127b7c747d526077747e7771663c767b60777166"><span class="__cf_email__" data-cfemail="6f060109002f1d0a09030a0c1b410b061d0a0c1b">[email&#160;protected]</span></a> — no credit card, no installation.</p>
       </div>
       <div class="contact-form-card">
-        <form id="contact-form" class="contact-form">
+        <form id="contact-form" class="contact-form" action="https://formsubmit.co/info@reflect.direct" method="POST">
           <input type="text" name="name" placeholder="Name *" required>
           <input type="email" name="email" placeholder="Email *" required>
           <input type="tel" name="phone" placeholder="Phone (optional)">
+          <input type="hidden" name="_subject" value="New contact form submission — Reflect.Direct">
+          <input type="hidden" name="_template" value="table">
+          <input type="hidden" name="_captcha" value="false">
+          <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
           <button type="submit" class="btn btn-primary">🚀 Send my details</button>
         </form>
         <div id="contact-success" class="contact-success" hidden>
@@ -254,15 +258,39 @@
 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
   var form = document.getElementById('contact-form');
   var success = document.getElementById('contact-success');
+  var submitBtn = form.querySelector('button[type="submit"]');
   form.addEventListener('submit', function (e) {
     e.preventDefault();
     var name = form.name.value.trim();
     var email = form.email.value.trim();
     if (!name || !email) return;
-    // TODO: wire up to real submission endpoint — currently a static confirmation.
-    success.querySelector('.contact-success-text').textContent = "We'll be in touch shortly at " + email + ".";
-    form.hidden = true;
-    success.hidden = false;
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Sending…';
+
+    fetch('https://formsubmit.co/ajax/info@reflect.direct', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify({
+        name: name,
+        email: email,
+        phone: form.phone.value.trim(),
+        _subject: 'New contact form submission — Reflect.Direct',
+        _template: 'table'
+      })
+    })
+      .then(function (res) { return res.json().then(function (data) { return { ok: res.ok, data: data }; }); })
+      .then(function (result) {
+        if (!result.ok) throw new Error('Submission failed');
+        success.querySelector('.contact-success-text').textContent = "We'll be in touch shortly at " + email + ".";
+        form.hidden = true;
+        success.hidden = false;
+      })
+      .catch(function () {
+        submitBtn.disabled = false;
+        submitBtn.textContent = '🚀 Send my details';
+        alert("Something went wrong sending your details — please try again or email info@reflect.direct directly.");
+      });
   });
 </script>
 
